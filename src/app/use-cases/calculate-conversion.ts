@@ -1,6 +1,7 @@
 import { ExchangeRate } from "@app/entities/exchange-rate"
-import { ExchangeRateService } from "@app/providers/exchange-rate-service"
+import { AbstractExchangeRateService } from "@app/providers/exchange-rate-service"
 import { CurrencyCode } from "@app/types"
+import { Injectable } from "@nestjs/common"
 
 
 export type Request = {
@@ -9,8 +10,9 @@ export type Request = {
   amount: number
 }
 
+@Injectable()
 export class CalculateConversionService {
-  constructor(private exchangeRateService: ExchangeRateService) { }
+  constructor(private exchangeRateService: AbstractExchangeRateService) { }
 
   async execute(request: Request) {
     const { baseCode, targetCode, amount } = request

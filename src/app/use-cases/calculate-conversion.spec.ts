@@ -1,8 +1,8 @@
-import { ExchangeRateService } from "@app/providers/exchange-rate-service";
+import { AbstractExchangeRateService } from "@app/providers/exchange-rate-service";
 import { CalculateConversionService, Request } from "./calculate-conversion";
 
 // Mocking ExchangeRateService class, because it is an inverse depencency of the CalculateConversionService
-class MockExchangeRateService implements ExchangeRateService {
+class MockExchangeRateService implements AbstractExchangeRateService {
   async getExchangeRate() {
     return { conversionRate: 5.52 }; // Mocked conversion rate
   }
