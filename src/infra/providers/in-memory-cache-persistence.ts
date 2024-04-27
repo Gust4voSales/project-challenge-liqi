@@ -1,4 +1,5 @@
 import { AbstractCachePersistance, SetCachePersistanceParams } from "@app/providers/cache-persistance";
+import { getCurrentTimeUnix } from "@app/utils/getCurrentTimeUnix";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
@@ -12,7 +13,10 @@ export class InMemoryCachePersistence implements AbstractCachePersistance {
   async get(key: string): Promise<any> {
     const cacheData = this.cache.get(key);
 
-    if (!cacheData || Date.now() > cacheData.expirationTime) {
+    // the unix time in seconds
+    const nowInUnixTimestamp = getCurrentTimeUnix()
+
+    if (!cacheData || nowInUnixTimestamp > cacheData.expirationTime) {
       this.cache.delete(key);
       return null;
     }
