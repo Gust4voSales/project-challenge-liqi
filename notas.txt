@@ -1,0 +1,8 @@
+### DESAFIO 1 - PASSOS
+1 - ✅ Criar lógica de domínio de calculo de cotação de moedas (entidade, use-case, tests)
+2 - ✅ Criar infraestrutura, criar rota, controller e chamar camada de domínio
+4 - ✅ Integrar com API (usar interface) 
+3 - ✅ Validação + error handling
+4 - ✅ Documentação
+5 - ✅ Extra? Adicionar lógica de InMemoryPersistence pra cache 
+
