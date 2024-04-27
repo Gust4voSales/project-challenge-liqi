@@ -1,16 +1,13 @@
 import { AbstractExchangeRateService } from "@app/providers/exchange-rate-service";
 import { CalculateConversionService, Request } from "./calculate-conversion";
-
-// Mocking ExchangeRateService class, because it is an inverse depencency of the CalculateConversionService
-class MockExchangeRateService implements AbstractExchangeRateService {
-  async getExchangeRate() {
-    return { conversionRate: 5.52 }; // Mocked conversion rate
-  }
-}
-
+import { GetExchangeRateService } from "./get-exchange-rate";
+import { AbstractCachePersistance } from "@app/providers/cache-persistance";
 
 describe('CalculateConversion', () => {
-  const mockedExchangeRateService = new MockExchangeRateService();
+  let exchangeRateService: AbstractExchangeRateService
+  let cachePersistance: AbstractCachePersistance
+
+  let getExchangeRateService: GetExchangeRateService = new GetExchangeRateService(exchangeRateService, cachePersistance);
 
   it('should return the correct converted amount for the given currency code', async () => {
     const request: Request = {
@@ -19,7 +16,10 @@ describe('CalculateConversion', () => {
       amount: 2,
     };
 
-    const calculateConversionService = new CalculateConversionService(mockedExchangeRateService);
+    const calculateConversionService = new CalculateConversionService(getExchangeRateService);
+
+    // Mocked implementation. GetExchangeRateService already has its implementation covered by unit tests
+    jest.spyOn(getExchangeRateService, 'execute').mockResolvedValue({ conversionRate: 5.52 });
 
     const result = await calculateConversionService.execute({
       baseCode: request.baseCode,
