@@ -16,6 +16,7 @@ export class CalculateConversionService {
 
   async execute(request: Request) {
     const { baseCode, targetCode, amount } = request
+
     const { conversionRate } = await this.exchangeRateService.getExchangeRate({ baseCode, targetCode })
 
     const exchangeRate = new ExchangeRate({ baseCode, targetCode, conversionRate, amount })
