@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Liqi-Challenge-02
+
+  Aws Serverless - Desafio 2
+
+Globals:
+  Function:
+    Timeout: 10
+
+Resources:
+  CreateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: CreateUserFunction
+      CodeUri: ./
+      Handler: dist/infra/serverless/lambda.createUser
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      Events:
+        CreateUser:
+          Type: Api
+          Properties:
+            Path: /createUser
+            Method: post
+
+Outputs:
+  API:
+    Description: 'API Gateway endpoint URL for Prod stage from a NestJS function'
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/createUser/'
