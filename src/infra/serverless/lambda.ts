@@ -1,7 +1,7 @@
 import { CreateUserService } from '@app/serverless/use-cases/create-user';
 import { HttpStatus } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { APIGatewayProxyEvent, Callback, Context, Handler, } from 'aws-lambda';
+import { APIGatewayProxyEvent, Callback, Context, Handler, SQSEvent, } from 'aws-lambda';
 import { AppModule } from 'src/app.module';
 
 export const createUser: Handler = async (
@@ -19,3 +19,9 @@ export const createUser: Handler = async (
     statusCode: HttpStatus.OK,
   };
 };
+
+export const sqsEventListener = (event: SQSEvent) => {
+  event.Records.forEach((record) => {
+    console.log(JSON.parse(record.body));
+  })
+}

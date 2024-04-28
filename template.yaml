@@ -10,6 +10,11 @@ Globals:
     Timeout: 10
 
 Resources:
+  SQSEvents:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: liqi-challenge-02-sqs
+
   CreateUserFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -25,6 +30,21 @@ Resources:
           Properties:
             Path: /createUser
             Method: post
+
+  SQSEventsListener:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: SQSEventsListener
+      CodeUri: ./
+      Handler: dist/infra/serverless/lambda.sqsEventListener
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      Events:
+        SQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt SQSEvents.Arn # The created SQS resource above
 
 Outputs:
   API:
